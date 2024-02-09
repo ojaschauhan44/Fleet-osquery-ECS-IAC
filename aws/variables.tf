@@ -3,19 +3,19 @@ locals {
 }
 
 variable "prefix" {
-  default = "tide-testfleet"
+  default = "abc-testfleet"
 }
 
 variable "domain_fleetdm" {
-  default = "fleet.tpsec.co"
+  default = "fleet.yourdomain.co"
 }
 
 variable "osquery_results_s3_bucket" {
-  default = "chronicle-logs-tide"
+  default = "chronicle-logs-abc"
 }
 
 variable "osquery_status_s3_bucket" {
-  default = "chronicle-logs-tide"
+  default = "chronicle-logs-abc"
 }
 
 variable "vulnerabilities_path" {
