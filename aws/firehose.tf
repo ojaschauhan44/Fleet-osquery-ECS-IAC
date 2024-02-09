@@ -4,6 +4,7 @@
 // Bucket logging is not supported in our Fleet Terraforms at the moment. It can be enabled by the
 // organizations deploying Fleet, and we will evaluate the possibility of providing this capability
 // in the future.
+/*
 resource "aws_s3_bucket" "osquery-results" { #tfsec:ignore:aws-s3-encryption-customer-key:exp:2022-07-01  #tfsec:ignore:aws-s3-enable-versioning #tfsec:ignore:aws-s3-enable-bucket-logging:exp:2022-06-15
   bucket = var.osquery_results_s3_bucket
   acl    = "private"
@@ -133,24 +134,26 @@ data "aws_iam_policy_document" "osquery_firehose_assume_role" {
       type        = "Service"
     }
   }
-}
+} */
 
 resource "aws_kinesis_firehose_delivery_stream" "osquery_results" {
   name        = "osquery_results"
-  destination = "s3"
+  destination = "extended_s3"
 
-  s3_configuration {
-    role_arn   = aws_iam_role.firehose-results.arn
-    bucket_arn = aws_s3_bucket.osquery-results.arn
+  extended_s3_configuration {
+    role_arn   = "arn:aws:iam::750197000277:role/service-role/KinesisFirehoseServiceRole-fleetosquery2-eu-west-2-1663143510889"
+    bucket_arn = "arn:aws:s3:::chronicle-log-bucket-20230104185140264200000001"
+    prefix     = "osquery_result/"
   }
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "osquery_status" {
   name        = "osquery_status"
-  destination = "s3"
+  destination = "extended_s3"
 
-  s3_configuration {
-    role_arn   = aws_iam_role.firehose-status.arn
-    bucket_arn = aws_s3_bucket.osquery-status.arn
+  extended_s3_configuration {
+    role_arn   = "arn:aws:iam::750197000277:role/service-role/KinesisFirehoseServiceRole-fleetosquery2-eu-west-2-1663143510889"
+    bucket_arn = "arn:aws:s3:::chronicle-log-bucket-20230104185140264200000001"
+    prefix     = "osquery_status/"
   }
 }

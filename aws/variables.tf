@@ -3,19 +3,19 @@ locals {
 }
 
 variable "prefix" {
-  default = "fleet"
+  default = "tide-testfleet"
 }
 
 variable "domain_fleetdm" {
-  default = "dogfood.fleetdm.com"
+  default = "fleet.tpsec.co"
 }
 
 variable "osquery_results_s3_bucket" {
-  default = "fleet-osquery-results-archive"
+  default = "chronicle-logs-tide"
 }
 
 variable "osquery_status_s3_bucket" {
-  default = "fleet-osquery-status-archive"
+  default = "chronicle-logs-tide"
 }
 
 variable "vulnerabilities_path" {
@@ -23,18 +23,26 @@ variable "vulnerabilities_path" {
 }
 
 variable "fleet_backend_cpu" {
-  default = 256
+  default = 4096
   type    = number
 }
 
 variable "fleet_backend_mem" {
-  default = 512
+  default = 12288
   type    = number
 }
 
 variable "async_host_processing" {
   default = "false"
 }
+
+variable "profile" {
+  default = "Administrator"
+}
+output "profile" {
+  value = var.profile
+}
+
 
 variable "logging_debug" {
   default = "false"
@@ -56,7 +64,7 @@ variable "database_name" {
 
 variable "fleet_image" {
   description = "the name of the container image to run"
-  default     = "fleetdm/fleet:v4.17.0"
+  default     = "fleetdm/fleet:v4.44.0"
 }
 
 variable "software_inventory" {
@@ -71,13 +79,13 @@ variable "vuln_db_path" {
 
 variable "cpu_migrate" {
   description = "cpu units for migration task"
-  default     = 1024
+  default     = 4096
   type        = number
 }
 
 variable "mem_migrate" {
   description = "memory limit for migration task in MB"
-  default     = 2048
+  default     = 8192
   type        = number
 }
 
@@ -114,4 +122,39 @@ variable "cloudwatch_log_retention" {
 variable "rds_backup_retention_period" {
   description = "number of days to keep snapshot backups"
   default     = 7
+}
+
+// labels / tags
+variable "namespace" {
+  default = "Security"
+}
+
+variable "name" {
+  default = "test_o"
+}
+
+variable "stage" {
+  default = ""
+}
+
+variable "delimiter" {
+  default = "-"
+}
+
+variable "tags" {
+  default = {}
+}
+
+variable "attributes" {
+  default = []
+}
+
+// Networks
+variable "vpc_cidr_block" {
+  default = "10.233.0.0/16"
+
+}
+
+variable "availability_zones" {
+  default = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
 }

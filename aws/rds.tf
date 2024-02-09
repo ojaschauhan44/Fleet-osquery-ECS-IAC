@@ -65,9 +65,9 @@ module "aurora_mysql" {
   source  = "terraform-aws-modules/rds-aurora/aws"
   version = "5.2.0"
 
-  name                  = "${local.name}-mysql-iam"
+  name                  = "${local.name}-mysql2-iam"
   engine                = "aurora-mysql"
-  engine_version        = "5.7.mysql_aurora.2.10.2"
+  engine_version        = "8.0.mysql_aurora.3.05.2"
   instance_type         = var.db_instance_type_writer
   instance_type_replica = var.db_instance_type_reader
 
@@ -97,7 +97,7 @@ module "aurora_mysql" {
   iam_role_description          = "${local.name} RDS enhanced monitoring IAM role"
   iam_role_path                 = "/autoscaling/"
   iam_role_max_session_duration = 7200
-
+  allow_major_version_upgrade = true
   apply_immediately   = true
   skip_final_snapshot = true
 
@@ -108,12 +108,12 @@ module "aurora_mysql" {
 
 resource "aws_db_parameter_group" "example_mysql" {
   name        = "${local.name}-aurora-db-mysql-parameter-group"
-  family      = "aurora-mysql5.7"
+  family      = "aurora-mysql8.0"
   description = "${local.name}-aurora-db-mysql-parameter-group"
 }
 
 resource "aws_rds_cluster_parameter_group" "example_mysql" {
   name        = "${local.name}-aurora-mysql-cluster-parameter-group"
-  family      = "aurora-mysql5.7"
+  family      = "aurora-mysql8.0"
   description = "${local.name}-aurora-mysql-cluster-parameter-group"
 }

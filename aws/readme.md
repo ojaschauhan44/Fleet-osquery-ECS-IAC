@@ -68,8 +68,52 @@ Replace `cert_arn` with the **certificate ARN** that applies to your environment
 
 After applying terraform run the following to migrate the database(`<private_subnet_id>` and `<desired_security_group>` can be obtained from the terraform output after applying, any value will suffice):
 ```
-aws ecs run-task --cluster fleet-backend --task-definition fleet-migrate:<latest_version> --launch-type FARGATE --network-configuration "awsvpcConfiguration={subnets=[<private_subnet_id>],securityGroups=[<desired_security_group>]}"
+aws ecs run-task --cluster tide-testfleet-backend --task-definition fleet-migrate:21 --launch-type FARGATE --network-configuration "awsvpcConfiguration={subnets=["subnet-080df2884ef93ebe0"],securityGroups=["sg-0bbbfa355302d850a"]}"
 ```
+aws rds describe-db-engine-versions --engine aurora-mysql  --engine-version 5.7.mysql_aurora.2.11.2  --query 'DBEngineVersions[].ValidUpgradeTarget[].EngineVersion' --profile=Administrator
+aws rds create-db-cluster-snapshot --db-cluster-id fleetdm-mysql-iam --db-cluster-snapshot-id Ojasfleetsnap --profile=Administrator
+aws rds restore-db-cluster-from-snapshot --snapshot-id Ojasfleetsnap2  --db-cluster-id fleetojas22 --engine aurora-mysql --engine-version 8.0.mysql_aurora.3.05.2  --profile=Administrator --vpc-security-group-ids sg-0ee0e7593dceefc80 --db-subnet-group-name fleetdm-mysql-iam
+aws rds create-db-instance --db-instance-identifier instance-running-version-3 --db-cluster-identifier fleetojas22 --db-instance-class db.r5.xlarge --engine aurora-mysql
+
+
+acm_certificate_arn = "arn:aws:acm:eu-west-2:750197000277:certificate/dc2934ce-121d-4521-ad9a-b1ac715f89bc"
+aws_alb_name = "fleetdm"
+aws_alb_target_group_name = "fleetdm"
+backend_security_group = "arn:aws:ec2:eu-west-2:750197000277:security-group/sg-0bbbfa355302d850a"
+backend_security_group_id = "sg-0bbbfa355302d850a"
+ecs_cluster_name = "tide-testfleet-backend"
+fleet-backend-task-revision = 21
+fleet-migration-task-revision = 22
+fleet_ecs_cluster_arn = "arn:aws:ecs:eu-west-2:750197000277:cluster/tide-testfleet-backend"
+fleet_ecs_cluster_id = "arn:aws:ecs:eu-west-2:750197000277:cluster/tide-testfleet-backend"
+fleet_ecs_service_name = "fleet"
+fleet_min_capacity = 0
+load_balancer_arn_suffix = "app/fleetdm/0eda5a8d06eb63c1"
+migrate_task_definition_family = "fleet-migrate"
+mysql_cluster_members = toset([
+  "fleetdm-mysql2-iam-1",
+])
+nameservers_fleetdm = tolist([
+  "ns-1343.awsdns-39.org",
+  "ns-1537.awsdns-00.co.uk",
+  "ns-293.awsdns-36.com",
+  "ns-964.awsdns-56.net",
+])
+private_subnet = "subnet-080df2884ef93ebe0"
+private_subnets = [
+  "subnet-080df2884ef93ebe0",
+  "subnet-0308f842e260cf722",
+  "subnet-0c639b2740197727f",
+]
+profile = "Administrator"
+redis_cluster_members = toset([
+  "fleetdm-redis-001",
+  "fleetdm-redis-002",
+  "fleetdm-redis-003",
+])
+role_arn = "arn:aws:iam::750197000277:role/fleetdm-role"
+target_group_arn_suffix = "targetgroup/fleetdm/d963cdaaf92a27e6"
+
 
 ### Conecting a host
 

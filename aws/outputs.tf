@@ -1,3 +1,4 @@
+
 output "nameservers_fleetdm" {
   value = aws_route53_zone.dogfood_fleetdm_com.name_servers
 }
@@ -26,8 +27,12 @@ output "mysql_cluster_members" {
   value = toset(module.aurora_mysql.rds_cluster_instance_ids)
 }
 
-output "acm_certificate_arn" {
+/*output "acm_certificate_arn" {
   value = aws_acm_certificate.dogfood_fleetdm_com.arn
+}*/
+
+output "acm_certificate_arn" {
+  value = module.acm_request_certificate.arn
 }
 
 output "load_balancer_arn_suffix" {

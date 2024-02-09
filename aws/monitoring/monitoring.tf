@@ -1,9 +1,9 @@
 terraform {
   // these values should match what is bootstrapped in ./remote-state
   backend "s3" {
-    bucket         = "fleet-terraform-remote-state"
-    region         = "us-east-2"
-    key            = "fleet-monitoring/"
+    bucket         = "tide-fleet-terraform-remote-state"
+    region         = "eu-west-2"
+    key            = "fleet"
     dynamodb_table = "fleet-terraform-state-lock"
   }
   required_providers {
@@ -13,9 +13,12 @@ terraform {
     }
   }
 }
+module "terraform"{
+  source = "../../aws"
+}
 
 provider "aws" {
-  region = "us-east-2"
+  region = "eu-west-2"
 }
 
 data "aws_caller_identity" "current" {}
@@ -24,9 +27,10 @@ data "aws_region" "current" {}
 data "terraform_remote_state" "fleet" {
   backend = "s3"
   config = {
-    bucket = "fleet-terraform-remote-state"
-    region = "us-east-2"
-    key    = "env:/${terraform.workspace}/fleet"
+    bucket = "tide-fleet-terraform-remote-state"
+    region = "eu-west-2"
+    key    = "fleet"
+    profile = module.terraform.profile
   }
 }
 
@@ -69,7 +73,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["*"]
+      identifiers = ["*",module.terraform.role_arn]
     }
 
     condition {

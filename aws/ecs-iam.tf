@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "fleet" {
   statement {
     effect    = "Allow"
     actions   = ["secretsmanager:GetSecretValue"]
-    resources = [aws_secretsmanager_secret.database_password_secret.arn]
+    resources = ["*"]
   }
 
   // useful when there is a static number of mysql cluster members
@@ -89,4 +89,7 @@ resource "aws_iam_policy" "main" {
 resource "aws_iam_role_policy_attachment" "attachment" {
   policy_arn = aws_iam_policy.main.arn
   role       = aws_iam_role.main.name
+}
+output "role_arn" {
+  value = aws_iam_role.main.arn
 }

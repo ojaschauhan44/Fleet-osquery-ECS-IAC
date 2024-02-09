@@ -1,13 +1,18 @@
 variable "prefix" {
-  default = "fleet"
+  default = "tide-fleet"
 }
 
 variable "region" {
-  default = "us-east-2"
+  default = "eu-west-2"
+}
+
+module "terraform"{
+  source = "../../aws"
 }
 
 provider "aws" {
   region = var.region
+  profile= module.terraform.profile
 }
 // Customer keys are not supported in our Fleet Terraforms at the moment. We will evaluate the
 // possibility of providing this capability in the future.

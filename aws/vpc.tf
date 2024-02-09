@@ -2,13 +2,15 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = "fleet-vpc"
-  cidr = "10.10.0.0/16"
+  #cidr = "10.10.0.0/16"
+  cidr = "10.233.0.0/16"
 
-  azs                 = ["us-east-2a", "us-east-2b", "us-east-2c"]
-  private_subnets     = ["10.10.1.0/24", "10.10.2.0/24", "10.10.3.0/24"]
-  public_subnets      = ["10.10.11.0/24", "10.10.12.0/24", "10.10.13.0/24"]
-  database_subnets    = ["10.10.21.0/24", "10.10.22.0/24", "10.10.23.0/24"]
-  elasticache_subnets = ["10.10.31.0/24", "10.10.32.0/24", "10.10.33.0/24"]
+
+  azs                 = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+  private_subnets     = ["10.233.10.0/24", "10.233.11.0/24", "10.233.12.0/24"]
+  public_subnets      = ["10.233.13.0/24", "10.233.14.0/24", "10.233.15.0/24"]
+  database_subnets    = ["10.233.21.0/24", "10.233.22.0/24", "10.233.23.0/24"]
+  elasticache_subnets = ["10.233.31.0/24", "10.233.32.0/24", "10.233.33.0/24"]
 
   create_database_subnet_group       = true
   create_database_subnet_route_table = true

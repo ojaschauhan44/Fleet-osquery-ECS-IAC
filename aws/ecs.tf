@@ -48,8 +48,8 @@ resource "aws_alb_listener" "https-fleetdm" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-FS-1-2-Res-2019-08"
-  certificate_arn   = aws_acm_certificate_validation.dogfood_fleetdm_com.certificate_arn
-
+  certificate_arn   = "arn:aws:acm:eu-west-2:750197000277:certificate/6eee7564-47a8-4df6-a2e8-8f6bffb1de60"
+  //certificate_arn = module.acm_request_certificate.arn
   default_action {
     target_group_arn = aws_alb_target_group.main.arn
     type             = "forward"
@@ -132,6 +132,7 @@ resource "aws_ecs_task_definition" "backend" {
         cpu         = var.fleet_backend_cpu
         memory      = var.fleet_backend_mem
         mountPoints = []
+        volumesFrom = []
         volumesFrom = []
         essential   = true
         portMappings = [
@@ -273,6 +274,7 @@ resource "aws_ecs_task_definition" "migration" {
         image       = var.fleet_image
         cpu         = var.cpu_migrate
         memory      = var.mem_migrate
+        command     = ["fleet", "prepare", "--no-prompt=true", "db"]
         mountPoints = []
         volumesFrom = []
         essential   = true
@@ -292,7 +294,7 @@ resource "aws_ecs_task_definition" "migration" {
             awslogs-stream-prefix = "fleet"
           }
         },
-        command = ["fleet", "prepare", "--no-prompt=true", "db"]
+
         secrets = [
           {
             name      = "FLEET_MYSQL_PASSWORD"
