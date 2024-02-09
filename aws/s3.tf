@@ -7,7 +7,7 @@
 // organizations deploying Fleet, and we will evaluate the possibility of providing this capability
 // in the future.
 resource "aws_s3_bucket" "osquery-carve" { #tfsec:ignore:aws-s3-enable-versioning #tfsec:ignore:aws-s3-encryption-customer-key:exp:2022-07-01 #tfsec:ignore:aws-s3-enable-bucket-logging:exp:2022-06-15
-  bucket = "tide-osquery-carve-${terraform.workspace}"
+  bucket = "abc-osquery-carve-${terraform.workspace}"
   acl    = "private"
 
   lifecycle_rule {
