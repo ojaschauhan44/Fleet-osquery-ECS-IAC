@@ -16,10 +16,10 @@ provider "tls" {
 terraform {
   // these values should match what is bootstrapped in ./remote-state
   backend "s3" {
-    bucket         = "tide-fleet-terraform-remote-state"
+    bucket         = "abc-fleet-terraform-remote-state"
     region         = "eu-west-2"
     key            = "fleet"
-    dynamodb_table = "tide-fleet-terraform-state-lock"
+    dynamodb_table = "abc-fleet-terraform-state-lock"
     profile        = "Administrator"
   }
   required_providers {
