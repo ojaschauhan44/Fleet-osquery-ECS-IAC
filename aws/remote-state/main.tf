@@ -1,5 +1,5 @@
 variable "prefix" {
-  default = "tide-fleet"
+  default = "abc-fleet"
 }
 
 variable "region" {
